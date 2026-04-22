@@ -3,8 +3,7 @@ import type { DetectedDevice } from "../main/devices";
 
 contextBridge.exposeInMainWorld("brm", {
   // Auth
-  login: (email: string, password: string) =>
-    ipcRenderer.invoke("auth:login", { email, password }),
+  startLogin: () => ipcRenderer.invoke("auth:start-login"),
   logout: () => ipcRenderer.invoke("auth:logout"),
   checkAuth: () => ipcRenderer.invoke("auth:check"),
 

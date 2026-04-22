@@ -4,7 +4,7 @@ import type { DetectedDevice } from "../../main/devices";
 
 interface Window {
   brm: {
-    login(email: string, password: string): Promise<{ customerId?: string; expiresAt?: string; error?: string }>;
+    startLogin(): Promise<{ customerId?: string; error?: string }>;
     logout(): Promise<void>;
     checkAuth(): Promise<{ customerId: string } | null>;
 

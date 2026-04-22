@@ -1,8 +1,28 @@
 import { app, BrowserWindow, ipcMain, shell } from "electron";
 import { join } from "path";
-import { registerAuthHandlers } from "./auth";
+import { registerAuthHandlers, handleProtocolUrl } from "./auth";
 import { registerDeviceHandlers, startDevicePolling, stopDevicePolling } from "./devices";
 import { registerTransferHandlers } from "./transfer";
+
+// Register as handler for brm-map-loader:// URLs (must be before app.whenReady)
+if (process.defaultApp) {
+  if (process.argv.length >= 2) {
+    app.setAsDefaultProtocolClient("brm-map-loader", process.execPath, [process.argv[1]]);
+  }
+} else {
+  app.setAsDefaultProtocolClient("brm-map-loader");
+}
+
+// Windows: app is re-launched with the URL as an argument
+const gotLock = app.requestSingleInstanceLock();
+if (!gotLock) {
+  app.quit();
+} else {
+  app.on("second-instance", (_e, argv) => {
+    const url = argv.find((arg) => arg.startsWith("brm-map-loader://"));
+    if (url) handleProtocolUrl(url);
+  });
+}
 
 function createWindow(): void {
   const win = new BrowserWindow({
@@ -19,7 +39,6 @@ function createWindow(): void {
 
   win.on("ready-to-show", () => win.show());
 
-  // Open external links in the system browser
   win.webContents.setWindowOpenHandler(({ url }) => {
     shell.openExternal(url);
     return { action: "deny" };
@@ -39,6 +58,12 @@ app.whenReady().then(() => {
   registerDeviceHandlers(ipcMain);
   registerTransferHandlers(ipcMain);
   createWindow();
+
+  // Mac: handle protocol URL when app is already open
+  app.on("open-url", (event, url) => {
+    event.preventDefault();
+    handleProtocolUrl(url);
+  });
 
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
