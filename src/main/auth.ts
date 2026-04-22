@@ -2,7 +2,9 @@ import { safeStorage, shell } from "electron";
 import { randomBytes, createHash } from "crypto";
 import type { IpcMain } from "electron";
 
-const SHOP_DOMAIN = process.env.SHOP_DOMAIN ?? "backroadmapbooks.myshopify.com";
+// DEV: backwoods-8728.myshopify.com | PROD: change to backroadmapbooks.myshopify.com
+// Set via VITE_SHOPIFY_STORE_DOMAIN in .env
+const SHOP_DOMAIN = process.env.SHOP_DOMAIN ?? "backwoods-8728.myshopify.com";
 const CLIENT_ID = process.env.SHOPIFY_CLIENT_ID ?? "";
 const REDIRECT_URI = "brm-map-loader://auth";
 

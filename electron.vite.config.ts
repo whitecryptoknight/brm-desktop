@@ -6,7 +6,8 @@ export default defineConfig(({ mode }) => {
   // Load all env vars (including non-VITE_ ones) so main process can use them
   const env = loadEnv(mode, process.cwd(), "");
   const apiUrl = env.VITE_BRM_API_URL || "https://dev.brmb.support";
-  const shopDomain = env.VITE_SHOPIFY_STORE_DOMAIN || "backroadmapbooks.myshopify.com";
+  // DEV: backwoods-8728.myshopify.com | PROD: backroadmapbooks.myshopify.com
+  const shopDomain = env.VITE_SHOPIFY_STORE_DOMAIN || "backwoods-8728.myshopify.com";
   const clientId = env.VITE_SHOPIFY_CLIENT_ID || "";
 
   return {
