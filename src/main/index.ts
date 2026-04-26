@@ -42,6 +42,9 @@ function createWindow(): void {
 app.whenReady().then(() => {
   // Inject CORS headers into all BRM API responses so the renderer can fetch
   // cross-origin without being blocked by Chromium's CORS enforcement.
+  // Inject CORS headers into all responses so the renderer can fetch cross-origin.
+  // This fires on OPTIONS preflight responses too, which is enough provided the
+  // Remix server returns any HTTP response to OPTIONS (even 200 from the CORS handler).
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
     callback({
       responseHeaders: {
@@ -49,6 +52,7 @@ app.whenReady().then(() => {
         "access-control-allow-origin": ["*"],
         "access-control-allow-headers": ["X-Desktop-Token, Content-Type, Authorization"],
         "access-control-allow-methods": ["GET, POST, OPTIONS"],
+        "access-control-max-age": ["86400"],
       },
     });
   });

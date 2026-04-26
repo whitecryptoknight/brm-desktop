@@ -7,7 +7,7 @@ import AdmZip from "adm-zip";
 import type { IpcMain, WebContents } from "electron";
 import { getStoredToken } from "./auth";
 
-const BRM_API = process.env.BRM_API_URL ?? "https://burst-map-tide-forms.trycloudflare.com";
+const BRM_API = process.env.BRM_API_URL ?? "https://dev.brmb.support";
 
 interface TransferRequest {
   registrationId: number;

@@ -5,7 +5,7 @@ import { loadEnv } from "vite";
 export default defineConfig(({ mode }) => {
   // Load all env vars (including non-VITE_ ones) so main process can use them
   const env = loadEnv(mode, process.cwd(), "");
-  const apiUrl = env.VITE_BRM_API_URL || "https://burst-map-tide-forms.trycloudflare.com";
+  const apiUrl = env.VITE_BRM_API_URL || "https://dev.brmb.support";
   // DEV: backwoods-8728.myshopify.com | PROD: backroadmapbooks.myshopify.com
   const shopDomain = env.VITE_SHOPIFY_STORE_DOMAIN || "backwoods-8728.myshopify.com";
   const clientId = env.VITE_SHOPIFY_CLIENT_ID || "b7b154afae59e3fbe94ae69472e5714c";
