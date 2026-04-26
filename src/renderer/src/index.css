@@ -3,6 +3,12 @@
 @tailwind utilities;
 
 body {
-  @apply bg-gray-50 text-gray-900 font-sans;
+  background-color: #F7F4EF;
+  background-image: url('./assets/BG.png');
+  background-repeat: repeat;
+  background-size: 280px 280px;
+  background-attachment: fixed;
+  color: #1C1C1A;
+  font-family: system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
 }

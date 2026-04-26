@@ -4,3 +4,14 @@ out/
 .env
 *.local
 .DS_Store
+
+# Claude Code
+.agents/
+.claude/
+skills-lock.json
+
+# Source images (copies live in src/renderer/src/assets/)
+BG.png
+SideBG.jpg
+loginBG.jpg
+Backroad-Maps-Horizontal-Logo.avif

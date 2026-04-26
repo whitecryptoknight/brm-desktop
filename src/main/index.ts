@@ -1,27 +1,13 @@
-import { app, BrowserWindow, ipcMain, shell } from "electron";
+import { app, BrowserWindow, ipcMain, shell, session } from "electron";
 import { join } from "path";
-import { registerAuthHandlers, handleProtocolUrl } from "./auth";
+import { registerAuthHandlers } from "./auth";
 import { registerDeviceHandlers, startDevicePolling, stopDevicePolling } from "./devices";
 import { registerTransferHandlers } from "./transfer";
 
-// Register as handler for brm-map-loader:// URLs (must be before app.whenReady)
-if (process.defaultApp) {
-  if (process.argv.length >= 2) {
-    app.setAsDefaultProtocolClient("brm-map-loader", process.execPath, [process.argv[1]]);
-  }
-} else {
-  app.setAsDefaultProtocolClient("brm-map-loader");
-}
-
-// Windows: app is re-launched with the URL as an argument
+// Prevent multiple instances
 const gotLock = app.requestSingleInstanceLock();
 if (!gotLock) {
   app.quit();
-} else {
-  app.on("second-instance", (_e, argv) => {
-    const url = argv.find((arg) => arg.startsWith("brm-map-loader://"));
-    if (url) handleProtocolUrl(url);
-  });
 }
 
 function createWindow(): void {
@@ -54,16 +40,23 @@ function createWindow(): void {
 }
 
 app.whenReady().then(() => {
+  // Inject CORS headers into all BRM API responses so the renderer can fetch
+  // cross-origin without being blocked by Chromium's CORS enforcement.
+  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+    callback({
+      responseHeaders: {
+        ...details.responseHeaders,
+        "access-control-allow-origin": ["*"],
+        "access-control-allow-headers": ["X-Desktop-Token, Content-Type, Authorization"],
+        "access-control-allow-methods": ["GET, POST, OPTIONS"],
+      },
+    });
+  });
+
   registerAuthHandlers(ipcMain);
   registerDeviceHandlers(ipcMain);
   registerTransferHandlers(ipcMain);
   createWindow();
-
-  // Mac: handle protocol URL when app is already open
-  app.on("open-url", (event, url) => {
-    event.preventDefault();
-    handleProtocolUrl(url);
-  });
 
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();

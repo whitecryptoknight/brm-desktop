@@ -11,20 +11,22 @@
     "lint": "eslint src --ext .ts,.tsx"
   },
   "dependencies": {
+    "adm-zip": "^0.5.17",
     "systeminformation": "^5.23.0"
   },
   "devDependencies": {
+    "@types/adm-zip": "^0.5.8",
     "@types/node": "^20.0.0",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
     "@vitejs/plugin-react": "^4.0.0",
     "autoprefixer": "^10.4.0",
     "electron": "^31.0.0",
     "electron-builder": "^24.0.0",
     "electron-vite": "^2.0.0",
     "postcss": "^8.4.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "tailwindcss": "^3.4.0",
     "typescript": "^5.0.0",
     "vite": "^5.0.0"
@@ -32,7 +34,9 @@
   "build": {
     "appId": "com.backroadmapbooks.desktop",
     "productName": "BRM Map Loader",
-    "directories": { "output": "dist" },
+    "directories": {
+      "output": "dist"
+    },
     "mac": {
       "target": "dmg",
       "category": "public.app-category.utilities"
@@ -40,6 +44,15 @@
     "win": {
       "target": "nsis"
     },
-    "files": ["out/**/*"]
+    "extraResources": [
+      {
+        "from": "resources/",
+        "to": ".",
+        "filter": ["**/*", "!.gitkeep"]
+      }
+    ],
+    "files": [
+      "out/**/*"
+    ]
   }
 }

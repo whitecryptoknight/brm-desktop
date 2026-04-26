@@ -3,9 +3,10 @@ import type { DetectedDevice } from "../main/devices";
 
 contextBridge.exposeInMainWorld("brm", {
   // Auth
-  startLogin: () => ipcRenderer.invoke("auth:start-login"),
+  verifyToken: (token: string) => ipcRenderer.invoke("auth:verify-token", token),
   logout: () => ipcRenderer.invoke("auth:logout"),
   checkAuth: () => ipcRenderer.invoke("auth:check"),
+  getToken: () => ipcRenderer.invoke("auth:get-token"),
 
   // Devices
   listDevices: () => ipcRenderer.invoke("devices:list"),
@@ -14,7 +15,9 @@ contextBridge.exposeInMainWorld("brm", {
     return () => ipcRenderer.removeAllListeners("devices:changed");
   },
 
-  // Transfer
+  // Device transfer
+  checkDeviceMap: (mountpoint: string) =>
+    ipcRenderer.invoke("transfer:check", mountpoint),
   startTransfer: (req: { registrationId: number; registrationType: "sd" | "digital"; deviceMountpoint: string }) =>
     ipcRenderer.invoke("transfer:start", req),
   onTransferProgress: (cb: (data: { stage: string; percent: number }) => void) => {
@@ -24,5 +27,13 @@ contextBridge.exposeInMainWorld("brm", {
   onFileProgress: (cb: (data: { label: string; percent: number }) => void) => {
     ipcRenderer.on("transfer:file-progress", (_e, data) => cb(data));
     return () => ipcRenderer.removeAllListeners("transfer:file-progress");
+  },
+
+  // Basecamp install
+  downloadBasecamp: (req: { pcDownloadUrl: string; macDownloadUrl: string; mapName: string; mapAcronym?: string; gmaFileUrl?: string; unlFileUrl?: string }) =>
+    ipcRenderer.invoke("basecamp:download", req),
+  onBasecampProgress: (cb: (data: { stage: string; percent: number }) => void) => {
+    ipcRenderer.on("basecamp:progress", (_e, data) => cb(data));
+    return () => ipcRenderer.removeAllListeners("basecamp:progress");
   },
 });
