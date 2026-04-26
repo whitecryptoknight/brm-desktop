@@ -3,6 +3,9 @@ import type { IpcMain } from "electron";
 
 const BRM_API = process.env.BRM_API_URL ?? "https://dev.brmb.support";
 
+// Cloudflare blocks Electron's default UA — spoof a browser agent
+const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36";
+
 const _store: { encryptedToken?: string; customerId?: string } = {};
 
 function saveToken(token: string, customerId: string): void {
@@ -25,7 +28,7 @@ export function registerAuthHandlers(ipcMain: IpcMain): void {
     try {
       const res = await fetch(`${BRM_API}/api/desktop/auth`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "User-Agent": UA },
         body: JSON.stringify({ token: desktopToken }),
       });
       const body = await res.json() as { customerId?: string; error?: string };

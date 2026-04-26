@@ -8,6 +8,7 @@ import type { IpcMain, WebContents } from "electron";
 import { getStoredToken } from "./auth";
 
 const BRM_API = process.env.BRM_API_URL ?? "https://dev.brmb.support";
+const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36";
 
 interface TransferRequest {
   registrationId: number;
@@ -127,7 +128,7 @@ async function downloadToFile(url: string, destPath: string, sender: WebContents
 
 async function fetchRegistrations(token: string): Promise<{ sdRegistrations: SdReg[]; digitalRegistrations: DigitalReg[] }> {
   const res = await fetch(`${BRM_API}/api/desktop/registrations`, {
-    headers: { "X-Desktop-Token": token },
+    headers: { "X-Desktop-Token": token, "User-Agent": UA },
   });
   if (!res.ok) throw new Error("Could not load registration data");
   return res.json();
