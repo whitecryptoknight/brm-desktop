@@ -7,7 +7,7 @@ import AdmZip from "adm-zip";
 import type { IpcMain, WebContents } from "electron";
 import { getStoredToken } from "./auth";
 
-const BRM_API = process.env.BRM_API_URL ?? "https://dev.brmb.support";
+const BRM_API = process.env.BRM_API_URL ?? "https://brm.dev.digitalbitz.cc";
 const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36";
 
 interface TransferRequest {

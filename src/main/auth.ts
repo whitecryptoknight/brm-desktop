@@ -1,7 +1,7 @@
 import { safeStorage } from "electron";
 import type { IpcMain } from "electron";
 
-const BRM_API = process.env.BRM_API_URL ?? "https://dev.brmb.support";
+const BRM_API = process.env.BRM_API_URL ?? "https://brm.dev.digitalbitz.cc";
 
 // Cloudflare blocks Electron's default UA — spoof a browser agent
 const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36";

@@ -4,7 +4,7 @@ import Transfer from "./Transfer";
 import logoUrl from "../assets/Backroad-Maps-Horizontal-Logo.avif";
 import sidebarBgUrl from "../assets/SideBG.jpg";
 
-const BRM_API = import.meta.env.VITE_BRM_API_URL ?? "https://dev.brmb.support";
+const BRM_API = import.meta.env.VITE_BRM_API_URL ?? "https://brm.dev.digitalbitz.cc";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
