@@ -10,8 +10,8 @@ out/
 .claude/
 skills-lock.json
 
-# Source images (copies live in src/renderer/src/assets/)
-BG.png
-SideBG.jpg
-loginBG.jpg
-Backroad-Maps-Horizontal-Logo.avif
+# Source images at project root (copies live in src/renderer/src/assets/)
+/BG.png
+/SideBG.jpg
+/loginBG.jpg
+/Backroad-Maps-Horizontal-Logo.avif

@@ -148,8 +148,11 @@ async function listGarminDevices(): Promise<DetectedDevice[]> {
     const hasGarminFolder = existsSync(join(mountpoint, "Garmin"));
 
     if (labelUpper.includes("GARMIN") || hasGarminFolder) {
-      const type =
-        block.type?.toLowerCase().includes("sd") || labelUpper.includes("SD") ? "sd" : "garmin";
+      const hasGarminXml = [
+        join(mountpoint, "Garmin", "GarminDevice.xml"),
+        join(mountpoint, "GarminDevice.xml"),
+      ].some((p) => existsSync(p));
+      const type = hasGarminXml ? "garmin" : "sd";
 
       const { totalBytes, freeBytes, ...xmlInfo } = parseGarminDeviceXml(mountpoint);
       const space =
